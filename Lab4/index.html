@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Лабораторна робота 4: JavaScript</title>
+  </head>
+  <body>
+    <h1>Лабораторна робота 4: Вступ до JavaScript</h1>
+
+    <script>
+      console.log("Завдання 1.");
+
+      function greetUser() {
+        let name = prompt("Введіть ваше ім'я:");
+        let message = `Привіт, ${name}! Радий тебе бачити!`;
+
+        alert(message);
+        console.log(message);
+      }
+
+      greetUser();
+
+      console.log("Завдання 2.");
+
+      function simpleArithmetic() {
+        let variant = parseInt(prompt("Введіть номер вашого варіанту:"));
+        let a = parseFloat(prompt("Введіть перше число:"));
+        let b = parseFloat(prompt("Введіть друге число:"));
+
+        let result = "";
+
+        if (variant % 2 === 0) {
+          let sum = a + b;
+          let diff = a - b;
+
+          result = `Сума: ${sum}, Різниця: ${diff}`;
+        } else {
+          let product = a * b;
+          let division = b !== 0 ? a / b : "Ділення на 0 неможливе";
+
+          result = `Добуток: ${product}, Частка: ${division}`;
+        }
+
+        alert(result);
+        console.log(result);
+      }
+
+      simpleArithmetic();
+
+      console.log("Завдання 3.");
+
+      function ageComparison() {
+        let birthYear = parseInt(prompt("Введіть ваш рік народження:"));
+        let currentYear = 2026;
+
+        let userAge = currentYear - birthYear;
+
+        const myAge = 19; 
+
+        let diff = userAge - myAge;
+
+        let message = "";
+
+        if (userAge > myAge) {
+          message = `Ваш вік: ${userAge}. Користувач старший на ${diff} років.`;
+        } else if (userAge < myAge) {
+          message = `Ваш вік: ${userAge}. Користувач молодший на ${Math.abs(diff)} років.`;
+        } else {
+          message = `Ваш вік: ${userAge}. Ви одного віку.`;
+        }
+
+        alert(message);
+        console.log(message);
+      }
+
+      ageComparison();
+    </script>
+  </body>
+</html>
