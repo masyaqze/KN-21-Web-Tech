@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>To-Do List</title>
+
+    <style>
+      body {
+        font-family: Arial;
+        background: #f2f2f2;
+        display: flex;
+        justify-content: center;
+        padding-top: 40px;
+      }
+
+      .card {
+        background: white;
+        width: 350px;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 15px;
+      }
+
+      input {
+        width: 65%;
+        padding: 8px;
+      }
+
+      button {
+        padding: 8px;
+        border: none;
+        cursor: pointer;
+        border-radius: 6px;
+        margin: 3px;
+        font-size: 12px;
+      }
+
+      .add {
+        background: #1e90ff;
+        color: white;
+      }
+      .sort {
+        background: #1e90ff;
+        color: white;
+        width: 100%;
+      }
+      .filter {
+        background: #1e90ff;
+        color: white;
+        width: 100%;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin-top: 10px;
+      }
+
+      li {
+        background: #eaeaea;
+        padding: 8px;
+        margin-top: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 6px;
+      }
+
+      .done {
+        text-decoration: line-through;
+        color: gray;
+      }
+
+      .icons button {
+        background: none;
+        font-size: 16px;
+      }
+
+      .edit {
+        color: orange;
+      }
+      .del {
+        color: red;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card">
+      <h2>To-Do List</h2>
+
+      <div>
+        <input id="taskInput" placeholder="Введіть завдання" />
+        <button class="add" onclick="addTask()">➕</button>
+      </div>
+
+      <button class="sort" onclick="sortTasks()">Сортувати</button>
+      <button class="filter" onclick="filterAll()">Показати всі</button>
+      <button class="filter" onclick="filterDone()">Виконані</button>
+      <button class="filter" onclick="filterNotDone()">Невиконані</button>
+
+      <ul id="list"></ul>
+    </div>
+
+    <script>
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      let mode = "all";
+
+      function save() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      }
+
+      function render() {
+        const list = document.getElementById("list");
+        list.innerHTML = "";
+
+        let show = tasks;
+
+        if (mode === "done") show = tasks.filter((t) => t.done);
+        if (mode === "not") show = tasks.filter((t) => !t.done);
+
+        show.forEach((t, i) => {
+          list.innerHTML += `
+        <li>
+            <div>
+                <input type="checkbox" onchange="toggle(${i})" ${t.done ? "checked" : ""}>
+                <span class="${t.done ? "done" : ""}">
+                    ${t.text}
+                </span>
+            </div>
+
+            <div class="icons">
+                <button class="edit" onclick="editTask(${i})">✏</button>
+                <button class="del" onclick="delTask(${i})">❌</button>
+            </div>
+        </li>`;
+        });
+      }
+
+      function addTask() {
+        let text = document.getElementById("taskInput").value;
+        if (!text) return;
+
+        tasks.push({
+          text,
+          done: false,
+          date: Date.now(),
+        });
+
+        document.getElementById("taskInput").value = "";
+        save();
+        render();
+      }
+
+      function delTask(i) {
+        tasks.splice(i, 1);
+        save();
+        render();
+      }
+
+      function toggle(i) {
+        tasks[i].done = !tasks[i].done;
+        save();
+        render();
+      }
+
+      function editTask(i) {
+        let newText = prompt("Редагувати:", tasks[i].text);
+        if (newText) {
+          tasks[i].text = newText;
+          save();
+          render();
+        }
+      }
+
+      function sortTasks() {
+        tasks.sort((a, b) => a.text.localeCompare(b.text));
+        save();
+        render();
+      }
+
+      function filterAll() {
+        mode = "all";
+        render();
+      }
+      function filterDone() {
+        mode = "done";
+        render();
+      }
+      function filterNotDone() {
+        mode = "not";
+        render();
+      }
+
+      render();
+    </script>
+  </body>
+</html>
