@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lab 5 - DOM JavaScript</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #f4f4f4;
+      }
+
+      header,
+      footer {
+        background: #333;
+        color: white;
+        text-align: center;
+        padding: 15px;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      .box {
+        background: white;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+      }
+
+      button {
+        padding: 10px 15px;
+        margin: 5px;
+        cursor: pointer;
+      }
+
+      .hover-box {
+        padding: 10px;
+        background: lightblue;
+        display: inline-block;
+        margin-top: 10px;
+        transition: 0.3s;
+      }
+
+      .hover-box:hover {
+        background: orange;
+        transform: scale(1.1);
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>Лабораторна робота №5 - DOM</h1>
+    </header>
+
+    <main>
+      <div class="box">
+        <h2 id="title">Привіт!</h2>
+        <p id="text">Це базовий текст, який можна змінювати.</p>
+
+        <button id="changeTextBtn">Змінити текст</button>
+        <button id="addItemBtn">Додати елемент</button>
+        <button id="removeItemBtn">Видалити елемент</button>
+      </div>
+
+      <div class="box">
+        <h3>Список елементів</h3>
+        <ul id="list">
+          <li>Елемент 1</li>
+          <li>Елемент 2</li>
+        </ul>
+      </div>
+
+      <div class="box">
+        <div class="hover-box">Наведи курсор на мене</div>
+      </div>
+
+      <div class="box">
+        <button id="counterBtn">Натисніть 23 раз!</button>
+        <p id="counterInfo">Натискань: 0</p>
+      </div>
+    </main>
+
+    <footer>
+      <p>Lab 5 JavaScript DOM</p>
+    </footer>
+
+    <script>
+      const text = document.getElementById("text");
+      const changeTextBtn = document.getElementById("changeTextBtn");
+      const addItemBtn = document.getElementById("addItemBtn");
+      const removeItemBtn = document.getElementById("removeItemBtn");
+      const list = document.getElementById("list");
+
+      const counterBtn = document.getElementById("counterBtn");
+      const counterInfo = document.getElementById("counterInfo");
+
+      changeTextBtn.addEventListener("click", () => {
+        text.textContent = "Текст було змінено!";
+      });
+
+      addItemBtn.addEventListener("click", () => {
+        const li = document.createElement("li");
+        li.textContent = "Новий елемент";
+        list.appendChild(li);
+      });
+
+      removeItemBtn.addEventListener("click", () => {
+        if (list.lastElementChild) {
+          list.removeChild(list.lastElementChild);
+        }
+      });
+
+      let count = 0;
+      const variant = 23;
+
+      counterBtn.addEventListener("click", () => {
+        count++;
+        counterInfo.textContent = "Натискань: " + count;
+
+        if (count === variant) {
+          alert("Максим Степаняк 23 варіант " + variant + "!");
+          count = 0;
+        }
+      });
+    </script>
+  </body>
+</html>
