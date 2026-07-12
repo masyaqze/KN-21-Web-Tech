@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab - Registration Form</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 10px;
+            box-sizing: border-box;
+        }
+
+        input[type="radio"] {
+            width: auto;
+            padding: 0;
+            margin: 0 5px 0 0;
+            vertical-align: middle;
+        }
+
+        .gender-group label {
+            margin-right: 15px;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 10px;
+            width: 100%;
+            background: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: darkgreen;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Реєстрація</h2>
+
+        <form id="regForm">
+            <label>Ім’я *</label>
+            <input type="text" id="name">
+
+            <label>Email *</label>
+            <input type="text" id="email">
+
+            <label>Пароль *</label>
+            <input type="password" id="password">
+
+            <label>Підтвердження пароля *</label>
+            <input type="password" id="confirmPassword">
+
+            <label>Вік *</label>
+            <input type="number" id="age">
+
+            <label>Стать *</label>
+
+            <div class="gender-group">
+                <label>
+                    <input type="radio" name="gender" value="male">
+                    Чоловік
+                </label>
+
+                <label>
+                    <input type="radio" name="gender" value="female">
+                    Жінка
+                </label>
+            </div>
+
+            <br>
+
+            <label>Група *</label>
+            <select id="group">
+                <option value="">-- Виберіть групу --</option>
+                <option value="IT-101">КН-21</option>
+                <option value="IT-102">КН-11</option>
+            </select>
+
+            <div id="errors" class="error"></div>
+
+            <button type="submit">Зареєструватися</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById("regForm");
+        const errorsDiv = document.getElementById("errors");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            let errors = [];
+
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+            const confirmPassword =
+                document.getElementById("confirmPassword").value;
+            const age = document.getElementById("age").value;
+
+            const gender = document.querySelector(
+                'input[name="gender"]:checked'
+            );
+
+            const group = document.getElementById("group").value;
+
+            if (name === "") {
+                errors.push("Ім’я є обов’язковим");
+            }
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                errors.push("Невірний формат email");
+            }
+
+            if (password.length < 6) {
+                errors.push("Пароль має містити мінімум 6 символів");
+            }
+
+            if (password !== confirmPassword) {
+                errors.push("Паролі не співпадають");
+            }
+
+            if (age === "" || age < 10) {
+                errors.push("Вік має бути 10+");
+            }
+
+            if (!gender) {
+                errors.push("Оберіть стать");
+            }
+
+            if (group === "") {
+                errors.push("Оберіть групу");
+            }
+
+            if (errors.length > 0) {
+                errorsDiv.innerHTML = errors.join("<br>");
+            } else {
+                errorsDiv.innerHTML = "";
+                alert("Реєстрація успішна!");
+                form.reset();
+            }
+        });
+    </script>
+</body>
+</html>
