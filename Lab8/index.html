@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Todo List API</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background: #f4f6f8;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: auto;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      button {
+        padding: 10px 15px;
+        margin: 10px 5px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .refresh {
+        background: #3498db;
+        color: white;
+      }
+
+      .add {
+        background: #2ecc71;
+        color: white;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+      }
+
+      th {
+        background: #2c3e50;
+        color: white;
+      }
+
+      form {
+        margin-top: 20px;
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+      }
+
+      input {
+        padding: 8px;
+        margin: 5px;
+        width: 60%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Список задач (TODOS)</h1>
+
+      <button class="refresh" onclick="loadData()">Оновити</button>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Назва задачі</th>
+            <th>Виконано</th>
+          </tr>
+        </thead>
+
+        <tbody id="tableBody"></tbody>
+      </table>
+
+      <form id="addForm">
+        <h3>Додати задачу</h3>
+        <input type="text" id="title" placeholder="Назва задачі" required />
+        <button type="submit" class="add">Добавити</button>
+      </form>
+    </div>
+
+    <script>
+      const API_URL = "https://jsonplaceholder.typicode.com/todos";
+
+      let dataStore = [];
+
+      async function loadData() {
+        const res = await fetch(API_URL + "?_limit=10"); // 10 записів
+        dataStore = await res.json();
+        renderTable(dataStore);
+      }
+
+      function renderTable(data) {
+        const tableBody = document.getElementById("tableBody");
+        tableBody.innerHTML = "";
+
+        data.forEach((todo) => {
+          tableBody.innerHTML += `
+                <tr>
+                    <td>${todo.id}</td>
+                    <td>${todo.title}</td>
+                    <td>${todo.completed ? "Так" : "Ні"}</td>
+                </tr>
+            `;
+        });
+      }
+
+      document
+        .getElementById("addForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const title = document.getElementById("title").value;
+
+          const newTodo = {
+            id: dataStore.length + 1,
+            title: title,
+            completed: false,
+          };
+
+          dataStore.push(newTodo);
+          renderTable(dataStore);
+
+          this.reset();
+        });
+
+      loadData();
+    </script>
+  </body>
+</html>
